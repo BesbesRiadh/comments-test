@@ -33,6 +33,9 @@ class CommentsType extends AbstractType
             ->add('parentid', HiddenType::class, [
                 'mapped' => false
             ])
+            ->add('rating', HiddenType::class, [
+                'mapped' => false
+            ])
             ->add('captchaCode', CaptchaType::class, [
                 'captchaConfig' => 'ExampleCaptcha',
                 'constraints' => [
