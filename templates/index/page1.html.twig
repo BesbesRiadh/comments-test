@@ -21,13 +21,14 @@
                     <p>Publié le {{comment.createdAt|date("d/m/Y H:i") }}</p>
                     <div>{{comment.content|raw}}</div>
                     <p><a href="#ajout-commentaire" data-reply data-id="{{comment.id}}" class="btn primary press">Répondre</a></p>
-
-                    {% if comment.replies != null %}
-                        {% for reply in comment.replies %}
-                            <p>Réponse publiée par {{reply.nickname}} le {{reply.createdAt|date("d/m/Y H:i") }}</p>
-                            <div>{{reply.content|raw}}</div>
-                        {% endfor %}
-                    {% endif %}
+                    <div class="col-xs2 col-sm3">
+                        {% if comment.replies != null %}
+                            {% for reply in comment.replies %}
+                                <p>Réponse publiée par {{reply.email}} le {{reply.createdAt|date("d/m/Y H:i") }}</p>
+                                <div>{{reply.content|raw}}</div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
                 {% endfor %}
             </div>
             <div class="col-xs2 col-sm3" id="ajout-commentaire">
@@ -39,4 +40,16 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        window.onload = () => {
+            document.querySelectorAll("[data-reply]").forEach(element => {
+                element.addEventListener("click", function () {
+                    document.querySelector("#comments_parentid").value = this.dataset.id;
+                });
+            });
+        }
+    </script>
 {% endblock %}

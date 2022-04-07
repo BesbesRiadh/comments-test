@@ -40,21 +40,17 @@ class IndexController extends AbstractController
         $commentForm->handleRequest($request);
 
         if($commentForm->isSubmitted() && $commentForm->isValid()){
-            $comment->setCreatedAt(new DateTimeImmutable());
-
             $parentid = $commentForm->get("parentid")->getData();
             if($parentid != null){
                 $parent = $em->getRepository(Comments::class)->find($parentid);
             }
 
-//            var_dump($article);
-//            exit;
             $comment->setParent($parent ?? null);
             $comment->setArticle($article);
+            $comment->setCreatedAt(new DateTimeImmutable());
             $em->persist($comment);
             $em->flush();
 
-            $this->addFlash('message', 'Votre commentaire a bien été envoyé');
             return $this->redirectToRoute('page1');
         }
 
