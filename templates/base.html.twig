@@ -12,8 +12,9 @@
         <header>
         <nav class="navbar primary">
             <div class="navbar-menu">
-            <a class="navbar-link" href="#">Page 1</a>
-            <a class="navbar-link" href="#">Page 2</a>
+            <a class="navbar-link" href="{{ path('app_index') }}">Accueil</a>
+            <a class="navbar-link" href="{{ path('page1') }}">Page 1</a>
+            <a class="navbar-link" href={{ path('page2') }}>Page 2</a>
             </div>
         </nav>
         </header>
