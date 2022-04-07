@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Captcha\Bundle\CaptchaBundle\Form\Type\CaptchaType;
+use Captcha\Bundle\CaptchaBundle\Validator\Constraints\ValidCaptcha;
 
 class CommentsType extends AbstractType
 {
@@ -31,8 +33,16 @@ class CommentsType extends AbstractType
             ->add('parentid', HiddenType::class, [
                 'mapped' => false
             ])
-            ->add('envoyer', SubmitType::class)
-        ;
+            ->add('captchaCode', CaptchaType::class, [
+                'captchaConfig' => 'ExampleCaptcha',
+                'constraints' => [
+                    new ValidCaptcha([
+                        'message' => 'Invalid captcha, please try again',
+                    ]),
+                ],
+                'mapped' => false
+            ])
+            ->add('envoyer', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
