@@ -16,6 +16,12 @@ framework:
     #fragments: true
     php_errors:
         log: true
+    
+    http_client:
+        default_options:
+            max_redirects: 7
+            verify_peer: false
+            verify_host: false
 
 when@test:
     framework:

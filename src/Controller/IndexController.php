@@ -27,10 +27,12 @@ class IndexController extends AbstractController {
 
     /**
      * @Route("/page1", name="page1")
+     * @Route("/page2", name="page2")
      */
-    public function page1Action(CommentairesService $commentairesService, Request $request) {
+    public function pageAction(CommentairesService $commentairesService, Request $request) {
+        $routeName = $request->attributes->get('_route');
         $em = $this->getDoctrine()->getManager();
-        $comments = $commentairesService->findCommentPage1();
+        $comments = $commentairesService->findCommentPage($routeName);
         $article = $em->getRepository(Article::class)->find(1);
         $comment = new Comments;
         $commentForm = $this->createForm(CommentsType::class, $comment);
@@ -75,18 +77,6 @@ class IndexController extends AbstractController {
                     'texte' => $article->getText(),
                     'comments' => $comments,
                     'commentForm' => $commentForm->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/page2", name="page2")
-     */
-    public function page2Action(CommentairesService $commentairesService): Response {
-        $commentaires = $commentairesService->findAll();
-        var_dump($commentaires);
-        exit;
-        return $this->render('index/page2.html.twig', [
-                    'controller_name' => 'IndexController',
         ]);
     }
 

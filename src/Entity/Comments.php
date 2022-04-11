@@ -6,6 +6,7 @@ use App\Repository\CommentsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CommentsRepository::class)
@@ -16,21 +17,25 @@ class Comments
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("comment:group")
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups("comment:group")
      */
     private $content;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("comment:group")
      */
     private $email;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("comment:group")
      */
     private $created_at;
 
