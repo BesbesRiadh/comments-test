@@ -11,14 +11,20 @@
     </head>
     <body>
         <header>
-        <nav class="navbar primary">
-            <div class="navbar-menu">
-            <a class="navbar-link" href="{{ path('app_index') }}">Accueil</a>
-            <a class="navbar-link" href="{{ path('page1') }}">Page 1</a>
-            <a class="navbar-link" href={{ path('page2') }}>Page 2</a>
-            </div>
-            <a class="navbar-link" href={{ path('app_register') }}>Register/</a><a class="navbar-link" href={{ path('app_login') }}>Login</a>
-        </nav>
+            <nav class="navbar primary">
+                <div class="navbar-menu">
+                    <a class="navbar-link" href="{{ path('app_index') }}">Accueil</a>
+                    <a class="navbar-link" href="{{ path('page1') }}">Page 1</a>
+                    <a class="navbar-link" href={{ path('page2') }}>Page 2</a>
+                </div>
+                    <a class="navbar-link" href={{ path('app_register') }}>Register/</a><a class="navbar-link" href={{ path('app_login') }}>Login</a>
+                <div class="navbar-menu">
+                    <a class="navbar-link" href={{ path('connect_google') }}>Se coonecter avec Google</a>
+                </div>
+                {% if app.user %}
+                    <a class="navbar-link" href={{ path('connect_google') }}>Logout</a>
+                {% endif %}
+            </nav>
         </header>
 
         <main>

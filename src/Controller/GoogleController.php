@@ -14,11 +14,9 @@ class GoogleController extends AbstractController {
     /**
      * Link to this controller to start the "connect" process
      *
-     * @Route("/connect/google", name="connect_google_start")
+     * @Route("/connect/google", name="connect_google")
      */
     public function connectAction(ClientRegistry $clientRegistry) {
-        // on Symfony 3.3 or lower, $clientRegistry = $this->get('knpu.oauth2.registry');
-        // will redirect to Facebook!
         return $clientRegistry
                         ->getClient('google_main') // key used in config/packages/knpu_oauth2_client.yaml
                         ->redirect([

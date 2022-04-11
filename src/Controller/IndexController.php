@@ -32,7 +32,7 @@ class IndexController extends AbstractController {
     public function pageAction(CommentairesService $commentairesService, Request $request) {
         $routeName = $request->attributes->get('_route');
         $em = $this->getDoctrine()->getManager();
-        $comments = $commentairesService->findCommentPage1();
+        $comments = $commentairesService->findCommentPage($routeName);
         $article = $em->getRepository(Article::class)->find(1);
         $comment = new Comments;
         $commentForm = $this->createForm(CommentsType::class, $comment);
@@ -70,10 +70,14 @@ class IndexController extends AbstractController {
             $em->persist($comment);
             $em->flush();
 
-            return $this->redirectToRoute('page1');
+            if ($routeName == "page1") {
+                return $this->redirectToRoute('page1');
+            } else {
+                return $this->redirectToRoute('page2');
+            }
         }
 
-        return $this->render('index/page1.html.twig', [
+        return $this->render('index/page.html.twig', [
                     'texte' => $article->getText(),
                     'comments' => $comments,
                     'commentForm' => $commentForm->createView(),
