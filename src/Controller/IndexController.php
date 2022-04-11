@@ -32,7 +32,7 @@ class IndexController extends AbstractController {
     public function pageAction(CommentairesService $commentairesService, Request $request) {
         $routeName = $request->attributes->get('_route');
         $em = $this->getDoctrine()->getManager();
-        $comments = $commentairesService->findCommentPage($routeName);
+        $comments = $commentairesService->findCommentPage1();
         $article = $em->getRepository(Article::class)->find(1);
         $comment = new Comments;
         $commentForm = $this->createForm(CommentsType::class, $comment);
