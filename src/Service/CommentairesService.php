@@ -22,17 +22,28 @@ class CommentairesService {
         return $response->toArray();
     }
 
-    public function findCommentPage1() {
-        $data = $this->commentsRepository->findByArticleId(1);
-        return $data;
-    }
-
     public function findCommentPage($page) {
         $url = "https://127.0.0.1:8000/api/" . $page;
         $response = $this->client->request(
                 "GET", $url
         );
         return $response->toArray();
+    }
+
+    public function findCommentPage1() {
+        $data = $this->commentsRepository->findByArticleId(1);
+        return $data;
+    }
+
+    public function findCommentPage2() {
+        $data = $this->commentsRepository->findByArticleId(2);
+        return $data;
+    }
+
+     public function findAllComments()
+    {
+        $data = $this->commentsRepository->findAll();
+        return $data;
     }
 
 }

@@ -18,7 +18,7 @@ class IndexController extends AbstractController {
      * @Route("/", name="app_index")
      */
     public function index(CommentairesService $commentairesService): Response {
-        $comments = $commentairesService->findAll();
+        $comments = $commentairesService->findAllComments();
 
         return $this->render('index/index.html.twig', [
                     'comments' => $comments,
@@ -32,8 +32,13 @@ class IndexController extends AbstractController {
     public function pageAction(CommentairesService $commentairesService, Request $request) {
         $routeName = $request->attributes->get('_route');
         $em = $this->getDoctrine()->getManager();
-        
-        $comments = $commentairesService->findCommentPage($routeName);
+
+//        $comments = $commentairesService->findCommentPage($routeName);
+        if ($routeName == "page1") {
+            $comments = $commentairesService->findCommentPage1();
+        } else {
+            $comments = $commentairesService->findCommentPage2();
+        }
         if ($routeName == "page1") {
             $article = $em->getRepository(Article::class)->find(1);
         } else {
