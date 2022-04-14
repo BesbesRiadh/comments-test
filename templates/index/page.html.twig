@@ -1,87 +1,98 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Page 1
+	Page 1
 {% endblock %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"/>
 {% endblock %}
 {% block body %}
-    <div class="container">
-        <div class="grix xs2 sm3 gutter-0 card">
-            <div class="col-xs2 col-sm3">
-                {{ texte }} 
-            </div>
-        </div>
-        <div class="grix xs2 sm3 gutter-0 card">
-            <div class="col-xs2 col-sm3">
-                <h2>Liste des commentaires</h2>
-                {% for comment in comments %}
-                    <h5>Commentaire de {{comment.email}}</h5>
-                    <div class="stars">
-                        {% if comment.rating != null %}
-                            {% for i in 1..5 %}
-                                {% if comment.rating >= i %}
-                                    <i class="las la-star" data-rating data-value="{{i}}" data-id="{{comment.id}}"></i>
-                                {% else %}
-                                    <i class="lar la-star" data-rating data-value="{{i}}" data-id="{{comment.id}}"></i>
-                                {% endif %}
-                            {% endfor %}
-                        {% else %}
-                            <i class="lar la-star" data-rating data-value="1" data-id="{{comment.id}}"></i>
-                            <i class="lar la-star" data-rating data-value="2" data-id="{{comment.id}}"></i>
-                            <i class="lar la-star" data-rating data-value="3" data-id="{{comment.id}}"></i>
-                            <i class="lar la-star" data-rating data-value="4" data-id="{{comment.id}}"></i>
-                            <i class="lar la-star" data-rating data-value="5" data-id="{{comment.id}}"></i>
-                        {% endif %}
-                    </div>
-                    <p>Publié le {{comment.createdAt|date("d/m/Y H:i") }}</p>
-                    <div>{{comment.content|raw}}</div>
-                    <p><a href="#ajout-commentaire" data-reply data-id="{{comment.id}}" class="btn primary press">Répondre</a></p>
-                    <div class="col-xs2 col-sm3">
-                        {% if comment.replies != null %}
-                            {% for reply in comment.replies %}
-                                <p>Réponse publiée par {{reply.email}} le {{reply.createdAt|date("d/m/Y H:i") }}</p>
-                                <div>{{reply.content|raw}}</div>
-                            {% endfor %}
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="col-xs2 col-sm3" id="ajout-commentaire">
-                <h2>Ajouter un commentaire</h2>
-                {{ form_start(commentForm) }}
-                <div id="editor"></div>
-                {{ form_end(commentForm) }}
-            </div>
-        </div>
-    </div>
+	<div class="container">
+		<div class="grix xs2 sm3 gutter-0 card">
+			<div class="col-xs2 col-sm3">
+				{{ texte }}
+			</div>
+		</div>
+		<div class="grix xs2 sm3 gutter-0 card">
+			<div class="col-xs2 col-sm3">
+				<h2>Liste des commentaires</h2>
+				{% for comment in comments %}
+					<h5>Commentaire de
+						{{comment.email}}</h5>
+					<div class="stars">
+						{% if comment.rating != null %}
+							{% for i in 1..5 %}
+								{% if comment.rating >= i %}
+									<i class="las la-star" data-rating data-value="{{i}}" data-id="{{comment.id}}"></i>
+								{% else %}
+									<i class="lar la-star" data-rating data-value="{{i}}" data-id="{{comment.id}}"></i>
+								{% endif %}
+							{% endfor %}
+						{% else %}
+							{% for i in 1..5 %}
+								<i class="lar la-star" data-rating data-value="{{i}}" data-id="{{comment.id}}"></i>
+							{% endfor %}
+						{% endif %}
+					</div>
+					<p>Publié le
+						{{comment.createdAt|date("d/m/Y H:i") }}</p>
+					<div>{{comment.content|raw}}</div>
+					<p>
+						<a href="#ajout-commentaire" data-reply data-id="{{comment.id}}" class="btn primary press">Répondre</a>
+					</p>
+					<div class="col-xs2 col-sm3">
+						{% if comment.replies != null %}
+							{% for reply in comment.replies %}
+								<p>Réponse publiée par
+									{{reply.email}}
+									le
+									{{reply.createdAt|date("d/m/Y H:i") }}</p>
+								<div>{{reply.content|raw}}</div>
+							{% endfor %}
+						{% endif %}
+					</div>
+				{% endfor %}
+			</div>
+			<div class="col-xs2 col-sm3" id="ajout-commentaire">
+				<h2>Ajouter un commentaire</h2>
+				{{ form_start(commentForm) }}
+				<div id="editor"></div>
+				{{ form_end(commentForm) }}
+			</div>
+		</div>
+	</div>
 
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        window.onload = () => {
-            document.querySelectorAll("[data-reply]").forEach(element => {
-                element.addEventListener("click", function () {
-                    document.querySelector("#comments_parentid").value = this.dataset.id;
-                });
-            });
-            var path = "{{ path('page1') }}";
-            document.querySelectorAll("[data-rating]").forEach(element => {
-                element.addEventListener("click", function () {
-                    $.ajax({
-                        type: 'POST',
-                        url: path,
-                        data: {"rating": this.dataset.value, "id": this.dataset.id},
-                        success: function (data) {
-                            window.location.reload();
-        {#                                $("html").empty();
-                                        $("html").append(data);#}
-                                                            }
-                                                        });
-                                                    });
-                                                });
-                                            };
-    </script>
+	<script>
+		window.onload = () => {
+document.querySelectorAll("[data-reply]").forEach(element => {
+element.addEventListener("click", function () {
+document.querySelector("#comments_parentid").value = this.dataset.id;
+});
+});
+var path = "{{ path('page1') }}";
+document.querySelectorAll("[data-rating]").forEach(element => {
+element.addEventListener("click", function () {
+$.ajax({
+type: 'POST',
+url: path,
+data: {
+"rating": this.dataset.value,
+"id": this.dataset.id
+},
+success: function (data) {
+window.location.reload();
+{
+# $("html").empty();
+$("html").append(data);
+#
+}
+}
+});
+});
+});
+};
+	</script>
 {% endblock %}
