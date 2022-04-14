@@ -70,6 +70,9 @@ class Comments
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getContent(): ?string
     {
         return $this->content;
@@ -81,7 +84,10 @@ class Comments
 
         return $this;
     }
-
+    
+    /**
+     * @return string
+     */
     public function getEmail(): ?string
     {
         return $this->email;
