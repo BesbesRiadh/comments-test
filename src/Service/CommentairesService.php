@@ -5,45 +5,36 @@ namespace App\Service;
 use App\Repository\CommentsRepository;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class CommentairesService {
+class CommentairesService
+{
 
     private $client;
+    private $appUrl;
 
-    public function __construct(HttpClientInterface $client, CommentsRepository $commentsRepository) {
+    public function __construct(HttpClientInterface $client, CommentsRepository $commentsRepository, $apiUrl)
+    {
         $this->client = $client;
         $this->commentsRepository = $commentsRepository;
+        $this->apiUrl = $apiUrl;
     }
 
-    public function findAll(): array {
-        $response = $this->client->request(
-                "GET",
-                'https://127.0.0.1:8000/api/comments'
-        );
-        return $response->toArray();
-    }
-
-    public function findCommentPage($page) {
-        $url = "https://127.0.0.1:8000/api/" . $page;
-        $response = $this->client->request(
-                "GET", $url
-        );
-        return $response->toArray();
-    }
-
-    public function findCommentPage1() {
-        $data = $this->commentsRepository->findByArticleId(1);
-        return $data;
-    }
-
-    public function findCommentPage2() {
-        $data = $this->commentsRepository->findByArticleId(2);
-        return $data;
-    }
-
-     public function findAllComments()
+    public function findAll(): array
     {
-        $data = $this->commentsRepository->findAll();
-        return $data;
+        $url =  $this->apiUrl .'/comments';
+        $response = $this->client->request(
+            "GET",
+            $url
+        );
+        return $response->toArray();
     }
 
+    public function findCommentPage($page)
+    {
+        $url = $this->apiUrl . $page;
+        $response = $this->client->request(
+            "GET",
+            $url
+        );
+        return $response->toArray();
+    }
 }

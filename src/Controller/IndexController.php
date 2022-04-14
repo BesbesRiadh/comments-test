@@ -12,38 +12,31 @@ use App\Entity\Article;
 use App\Form\CommentsType;
 use DateTimeImmutable;
 
-class IndexController extends AbstractController {
+class IndexController extends AbstractController
+{
 
     /**
      * @Route("/", name="app_index")
      */
-    public function index(CommentairesService $commentairesService): Response {
-        $comments = $commentairesService->findAllComments();
+    public function index(CommentairesService $commentairesService): Response
+    {
+        $comments = $commentairesService->findAll();
 
         return $this->render('index/index.html.twig', [
-                    'comments' => $comments,
+            'comments' => $comments,
         ]);
     }
 
     /**
-     * @Route("/page1", name="page1")
-     * @Route("/page2", name="page2")
+     * @Route("/page/{page<\d+>}", name="page")
      */
-    public function pageAction(CommentairesService $commentairesService, Request $request) {
-        $routeName = $request->attributes->get('_route');
+    public function pageAction(CommentairesService $commentairesService, Request $request)
+    {
+        $page = $request->attributes->get('page');
         $em = $this->getDoctrine()->getManager();
 
-//        $comments = $commentairesService->findCommentPage($routeName);
-        if ($routeName == "page1") {
-            $comments = $commentairesService->findCommentPage1();
-        } else {
-            $comments = $commentairesService->findCommentPage2();
-        }
-        if ($routeName == "page1") {
-            $article = $em->getRepository(Article::class)->find(1);
-        } else {
-            $article = $em->getRepository(Article::class)->find(2);
-        }
+        $comments = $commentairesService->findCommentPage($page);
+        $article = $em->getRepository(Article::class)->find($page);
 
         $comment = new Comments;
         $commentForm = $this->createForm(CommentsType::class, $comment);
@@ -81,18 +74,13 @@ class IndexController extends AbstractController {
             $em->persist($comment);
             $em->flush();
 
-            if ($routeName == "page1") {
-                return $this->redirectToRoute('page1');
-            } else {
-                return $this->redirectToRoute('page2');
-            }
+            return $this->redirectToRoute($request->headers->get('referer'));
         }
 
         return $this->render('index/page.html.twig', [
-                    'texte' => $article->getText(),
-                    'comments' => $comments,
-                    'commentForm' => $commentForm->createView(),
+            'texte' => $article->getText(),
+            'comments' => $comments,
+            'commentForm' => $commentForm->createView(),
         ]);
     }
-
 }
