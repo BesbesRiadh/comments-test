@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Repository\CommentsRepository;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+// Ce service permet de récupérer les commentaires depuis l'API
 class CommentairesService
 {
 
@@ -20,6 +21,7 @@ class CommentairesService
 
     public function findAll(): array
     {
+        //Récupérer les commentaires depuis l'api
         $url =  $this->apiUrl .'/comments';
         $response = $this->client->request(
             "GET",
@@ -30,7 +32,8 @@ class CommentairesService
 
     public function findCommentPage($page)
     {
-        $url = $this->apiUrl . $page;
+        //Récupérer les commentaires depuis API selon page
+        $url = $this->apiUrl . '/page' . $page;
         $response = $this->client->request(
             "GET",
             $url

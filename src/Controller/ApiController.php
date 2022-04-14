@@ -26,7 +26,7 @@ class ApiController extends AbstractController
      */
     public function index(): Response
     {
-        //Récupérer tous les commentaires 
+        //Récupérer tous les commentaires depuis la BD
         $data = $this->commentsRepository->findAll();
         return $this->json($data, 200, [], ['groups' => 'comment:group']);
     }
@@ -37,7 +37,7 @@ class ApiController extends AbstractController
      */
     public function page(Request $request): Response
     {
-        //Récupérer les commenntaires selon article/page choisi
+        //Récupérer les commenntaires selon article/page depuis la BD {https://127.0.0.1:8000/api/page/1}
         $data = $this->commentsRepository->findByArticleId($request->attributes->get('page'));
         return $this->json($data, 200, [], ['groups' => 'comment:group']);
     }

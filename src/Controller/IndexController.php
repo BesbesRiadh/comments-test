@@ -20,8 +20,8 @@ class IndexController extends AbstractController
      */
     public function index(CommentairesService $commentairesService): Response
     {
+        //Récupérer et afficher tous les commentaires
         $comments = $commentairesService->findAll();
-
         return $this->render('index/index.html.twig', [
             'comments' => $comments,
         ]);
@@ -33,14 +33,17 @@ class IndexController extends AbstractController
     public function pageAction(CommentairesService $commentairesService, Request $request)
     {
         $page = $request->attributes->get('page');
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();   
 
+        //Récupérer les commentaires de $page 
         $comments = $commentairesService->findCommentPage($page);
+        //Récupérer l'article associé aux commentaires
         $article = $em->getRepository(Article::class)->find($page);
 
         $comment = new Comments;
         $commentForm = $this->createForm(CommentsType::class, $comment);
 
+        //Traitement de la requête AJAX pour le système de rating si elle est déclenchée
         if ($request->isXmlHttpRequest()) {
             $rating = $request->request->get('rating');
             $id = $request->request->get('id');
@@ -61,6 +64,7 @@ class IndexController extends AbstractController
             return new Response($htmlToRender);
         }
 
+        //Traitement des infos du form des commentaires
         $commentForm->handleRequest($request);
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $parentid = $commentForm->get("parentid")->getData();

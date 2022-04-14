@@ -23,6 +23,7 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
+        // Formulaire inscription et traitemetn
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword(
             $userPasswordHasher->hashPassword(
