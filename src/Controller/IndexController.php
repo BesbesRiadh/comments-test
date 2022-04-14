@@ -59,7 +59,7 @@ class IndexController extends AbstractController {
                 $em->flush();
             }
 
-            $htmlToRender = $this->renderView('index/page1.html.twig', array(
+            $htmlToRender = $this->renderView('index/page.html.twig', array(
                 'texte' => $article->getText(),
                 'comments' => $comments,
                 'commentForm' => $commentForm->createView(),
